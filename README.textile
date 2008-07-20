@@ -12,7 +12,9 @@ There are several ways to check for validation:
 
 h3.Use
 
-@&lt;input class="email" name="email" type="text" />
+<pre>
+<code>
+&lt;input class="email" name="email" type="text" />
 &lt;input type="text" name="username" rel="[5,15]" />
 
 // JavaScript
@@ -24,7 +26,9 @@ $('form input').each(function() {
         // $(this) is valid
     }
 }
-$('form *').validateOnChange();@
+$('form *').validateOnChange();
+</code>
+</pre>
 
 h3. Examples
 
