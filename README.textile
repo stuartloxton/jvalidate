@@ -1,0 +1,38 @@
+h1. jValidate
+
+jValidate allows for an easier and cleaner way of validating forms on the client side. It’s key features are that it puts validation rules in semantic HTML (inputs with class email are validates as emails, etc), is passive not aggressive, is easy to access and trigger.
+
+There are several built in validation rules; email, url, number, string, ip, date. As well as general length restrictions with minimum length, max length and in a range. It’s also very simple to add your own validation rules, it’s easiest if you know regular expressions but it’s not a must.
+
+There are several ways to check for validation:
+
+    * With a function @$('input').validate();@
+    * With selectors @$('input:valid');@
+    * With listeners @$('input').listenValidation();@
+
+h3.Use
+
+@&lt;input class=”email” name=”email” type=”text” />
+&lt;input type=”text” name=”username” rel=”[5,15]” />
+
+// JavaScript
+$(’form :invalid’).each(function() {
+    // $(this) is invalid
+}
+$(’form input’).each(function() {
+    if($(this).validate()) {
+        // $(this) is valid
+    }
+}
+$(’form *’).listenValidation();@
+
+h3. Examples
+
+
+ToDo
+
+    * Add more validation rules.
+    * Support radio and checkbox validation.
+    * Add a better listener.
+    * Add more configurable actions and options.
+    * Release.
