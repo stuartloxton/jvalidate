@@ -14,8 +14,8 @@ h3.Use
 
 <pre>
 <code>
-&lt;input class="email" name="email" type="text" />
-&lt;input type="text" name="username" rel="[5,15]" />
+<input class="email" name="email" type="text" />
+<input type="text" name="username" rel="[5,15]" />
 
 // JavaScript
 $('form :invalid').each(function() {
