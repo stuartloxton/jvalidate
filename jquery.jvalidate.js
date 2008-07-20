@@ -56,7 +56,7 @@ jQuery.fn.validate = function() {
             jQuery(this).find('input').validate();
         } else if(/input/i.test(this.nodeName) && !/submit/i.test(this.type)) {
             addClass = (jQuery(this).isValid()) ? jQuery.jValidateSettings.validClass : jQuery.jValidateSettings.invalidClass;
-            removeClass = (!jQuery(this).isValie()) ? jQuery.jValidateSettings.validClass : jQuery.jValidateSettings.invalidClass;
+            removeClass = (!jQuery(this).isValid()) ? jQuery.jValidateSettings.validClass : jQuery.jValidateSettings.invalidClass;
             if(jQuery.jValidateSettings.addClassToInput) {
                 jQuery(this).removeClass(removeClass);
                 jQuery(this).addClass(addClass);
@@ -74,6 +74,21 @@ jQuery.fn.validate = function() {
         }
     });
 };
+
+jQuery.fn.validateOnChange = function () {
+    console.log(this);
+    jQuery.each(this, function() {
+       if(/form/i.test(this.nodeName)) {
+            jQuery(this).find('input').validateOnChange();
+       } else if(/input/i.test(this.nodeName) && !/submit/i.test(this.type)) {
+            console.log(this);
+            jQuery(this).blur(function() {
+                console.log('blurring');
+                jQuery(this).validate();
+            });
+       }
+    });
+}
 
 /*********************************
  * Selectors

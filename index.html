@@ -4,6 +4,31 @@
     <title>jValidate Examples</title>
     <script src="jquery.js" type="text/javascript"></script>
     <script src="jquery.jvalidate.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('form').validate();
+            $('form').validateOnChange();
+            
+            $('form').submit(function() {
+                console.log($('form :invalid').length)
+                if($('form :valid').length != 0) {
+                    alert('Some forms are invalid');
+                } else {
+                    alert('all forms are fine');
+                }
+                return false;
+            });
+        });
+    </script>
+    <style type="text/css">
+        dd.valid {
+            background: transparent url(http://www.famfamfam.com/lab/icons/silk/icons/accept.png) no-repeat scroll right center;
+            width: 200px;
+        }
+        dd input {
+            width: 175px;
+        }
+    </style>
 </head>
 <body>
     <h1>jValidate Examples</h1>
