@@ -10,8 +10,7 @@
             $('form').validateOnChange();
             
             $('form').submit(function() {
-                console.log($('form :invalid').length)
-                if($('form :valid').length != 0) {
+                if($('form :invalid').length != 0) {
                     alert('Some forms are invalid');
                 } else {
                     alert('all forms are fine');

@@ -14,7 +14,9 @@ jQuery.jValidateSettings = {
     addClassToForm: true,
     addClassToInput: true,
     validClass: 'valid',
-    invalidClass: 'invalid'
+    invalidClass: 'invalid',
+    invalidFunction: false,
+    validFunction: false
 }
 
 /*********************************
@@ -47,6 +49,8 @@ jQuery.fn.isValid = function() {
         } else {
             return false;
         }
+    } else {
+        return true;
     }
 }
 
@@ -69,6 +73,12 @@ jQuery.fn.validate = function() {
                 jQuery(this).parents('form').removeClass(removeClass);
                 jQuery(this).parents('form').addClass(addClass);
             }
+            if(jQuery.isFunction(jQuery.jValidateSettings.validFunction) && jQuery(this).isValid()) {
+                jQuery.jValidateSettings.validFunction(this);
+            }
+            if(jQuery.isFunction(jQuery.jValidateSettings.invalidFunction) && !jQuery(this).isValid()) {
+                jQuery.jValidateSettings.invalidFunction(this);
+            }
         } else if(/select/i.test(this.nodeName)) {
             return true;
         }
@@ -76,14 +86,11 @@ jQuery.fn.validate = function() {
 };
 
 jQuery.fn.validateOnChange = function () {
-    console.log(this);
     jQuery.each(this, function() {
        if(/form/i.test(this.nodeName)) {
             jQuery(this).find('input').validateOnChange();
        } else if(/input/i.test(this.nodeName) && !/submit/i.test(this.type)) {
-            console.log(this);
             jQuery(this).blur(function() {
-                console.log('blurring');
                 jQuery(this).validate();
             });
        }
