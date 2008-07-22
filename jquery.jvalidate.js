@@ -16,7 +16,8 @@ jQuery.jValidateSettings = {
     validClass: 'valid',
     invalidClass: 'invalid',
     invalidFunction: false,
-    validFunction: false
+    validFunction: false,
+	cancelFormSubmit: true
 }
 
 /*********************************
@@ -44,12 +45,22 @@ jQuery.fn.isValid = function() {
                 i++;
             }
         }
-        if(i == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    } else {
+		return (i == 0) ? true : false;
+    } else if(/form/i.test(target.nodeName)) {
+		form = target;
+		jQuery(target).find('input').each(function() {
+			if(!jQuery(this).isValid()) {
+				ar = jQuery(this).parents('form');
+				tar = ar[0];
+				i = $(tar).attr('rel');
+				if(i == undefined) i = 0;
+				i = parseInt(i) + 1;
+				$(tar).attr('rel', i);
+			}
+		});
+		i = jQuery(form).attr('rel');
+		return (i == undefined) ? true : false;
+	} else {
         return true;
     }
 }
@@ -57,7 +68,13 @@ jQuery.fn.isValid = function() {
 jQuery.fn.validate = function() {
     jQuery.each(this, function() {
         if(/form/i.test(this.nodeName)) {
-            jQuery(this).find('input').validate();
+            //jQuery(this).find('input').validate();
+			if(jQuery(this).isValid()) {
+				// Form is valid
+				return true;
+			} else {
+				return false;
+			}
         } else if(/input/i.test(this.nodeName) && !/submit/i.test(this.type)) {
             addClass = (jQuery(this).isValid()) ? jQuery.jValidateSettings.validClass : jQuery.jValidateSettings.invalidClass;
             removeClass = (!jQuery(this).isValid()) ? jQuery.jValidateSettings.validClass : jQuery.jValidateSettings.invalidClass;
@@ -89,6 +106,13 @@ jQuery.fn.validateOnChange = function () {
     jQuery.each(this, function() {
        if(/form/i.test(this.nodeName)) {
             jQuery(this).find('input').validateOnChange();
+			if(jQuery.jValidateSettings.cancelFormSubmit) {
+				jQuery(this).submit(function() {
+					if(!jQuery(this).isValid) {
+						return false;
+					}
+				});
+			}
        } else if(/input/i.test(this.nodeName) && !/submit/i.test(this.type)) {
             jQuery(this).blur(function() {
                 jQuery(this).validate();
