@@ -126,6 +126,6 @@ jQuery.fn.validateOnChange = function () {
 *********************************/
 
 jQuery.extend(jQuery.expr[':'], {
-    valid: "$(a).isValid();",
-    invalid: "!$(a).isValid();"
+    valid: "jQuery(a).isValid();",
+    invalid: "!jQuery(a).isValid();"
 });
