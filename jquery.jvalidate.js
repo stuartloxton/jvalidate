@@ -7,7 +7,10 @@ jQuery.validators = {
     number: /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/,
     string: /[a-zA-Z]+/,
     email: /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/,
-    ip: /\b(([01]?\d?\d|2[0-4]\d|25[0-5])\.){3}([01]?\d?\d|2[0-4]\d|25[0-5])\b/
+    ip: /\b(([01]?\d?\d|2[0-4]\d|25[0-5])\.){3}([01]?\d?\d|2[0-4]\d|25[0-5])\b/,
+	permanent: function(val) {
+		return !/(mallinator|trashymail|maileater|spamhole|pookmail)\.com$/.test(val);
+	}
 }
 jQuery.jValidateSettings = {
     addClassToParent: true,
@@ -29,8 +32,10 @@ jQuery.fn.isValid = function() {
     if(/input/i.test(target.nodeName)) {
         i = 0;
         jQuery.each(jQuery.validators, function(x, y) {
-           if(jQuery(target).hasClass(x) && !y.test(jQuery(target).attr('value'))) {
-            i++;
+           if(jQuery(target).hasClass(x)) {
+	 			if(jQuery.isFunction(y)) {
+					if(!y(target.value)) i++;
+				} else if(!y.test(target.value)) i++;
            }
         });
         if(jQuery(target).attr('rel') != undefined && /\[.*\]/.test(jQuery(target).attr('rel'))) {
@@ -68,9 +73,7 @@ jQuery.fn.isValid = function() {
 jQuery.fn.validate = function() {
     jQuery.each(this, function() {
         if(/form/i.test(this.nodeName)) {
-            //jQuery(this).find('input').validate();
 			if(jQuery(this).isValid()) {
-				// Form is valid
 				return true;
 			} else {
 				return false;
